@@ -24,8 +24,20 @@ def get_level_name(level: int):
 def get_answer(question_url: str):
     res = requests.get(question_url)
     soup = bs(res.content, 'html.parser')
-    solution = soup.find_all("div", {"class": "solutions"})[0]
-    return solution.strong.text
+
+    solutions = soup.find_all("div", {"class": "solutions"})
+    if len(solutions) == 0:
+        solutions = soup.find_all("div", {"class": "entry-content"})
+    strong = solutions[0].strong.text.strip()
+
+    if strong.endswith(":"):
+        return solutions[0].text.split(":")[-1].strip()
+    elif strong == 'SOLUTION':
+        return solutions[0].select_one('p:-soup-contains("SOLUTION")').text.split()[-1]
+    elif len(strong) > 0:
+        return strong
+    else:
+        return solutions[0].find_all("div", {"class": "answer-text"})[0].text
 
 
 def get_parser():
@@ -60,7 +72,11 @@ if __name__ == '__main__':
 
     res = requests.get(puzzle_url)
     soup = bs(res.content, 'html.parser')
-    levels = soup.find_all("div", {"class": "levels-div"})[0].find_all('li')
+    levels = soup.find_all("div", {"class": "levels-div"})
+    if len(levels) == 0:
+        levels = soup.find_all("div", {"class": "entry-content"})
+    levels = levels[0].find_all('li')
+
     if question_number > 0:
         try:
             question = levels[question_number - 1]

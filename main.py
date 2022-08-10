@@ -44,7 +44,7 @@ def get_parser():
     parser = argparse.ArgumentParser(description='CodyCross CLI')
     parser.add_argument('level', type=int, help='level number')
     parser.add_argument('puzzle', type=int, help='puzzle number')
-    parser.add_argument('-q', '--question', type=int, help='question number')
+    parser.add_argument('question', type=int, help='question number, if 0, get answers for all questions')
     parser.add_argument('-d', '--debug', help='debug mode', action='store_true')
     return parser
 
@@ -56,9 +56,7 @@ if __name__ == '__main__':
     if args.puzzle < 1 or args.puzzle > 5:
         sys.exit(f"Puzzle value should be between 1 and 5")
 
-    question_number = -1
-    if args.question:
-        question_number = args.question
+    question_number = args.question
 
     try:
         lvl_name = get_level_name(args.level)

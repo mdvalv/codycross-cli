@@ -3,18 +3,17 @@
 ## Usage
 
 ```
-usage: main.py [-h] [-q QUESTION] [-d] level puzzle
+usage: main.py [-h] [-d] level puzzle question
 
 CodyCross CLI
 
 positional arguments:
   level                 level number
   puzzle                puzzle number
+  question     question number, if 0, get answers for all questions
 
 optional arguments:
   -h, --help            show this help message and exit
-  -q QUESTION, --question QUESTION
-                        question number
   -d, --debug           debug mode
 ```
 
